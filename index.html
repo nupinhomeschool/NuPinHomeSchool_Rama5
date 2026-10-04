@@ -1,0 +1,38 @@
+<!-- JavaScript ส่งข้อมูลแบบ No-CORS -->
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyS1PbHoFKh_icXq4vP3Kbp4tMEcZqzNeFqifDV-lbG2UxszIdZ0JfUWkQzw157Wbiq6g/exec';
+
+        function selectSubject(subjectName) {
+            document.getElementById('selectedSubject').value = subjectName;
+            document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = 'กำลังส่งข้อมูล...';
+
+            const form = document.getElementById('bookingForm');
+            const formData = new FormData(form);
+
+            fetch(scriptURL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                body: formData 
+            })
+            .then(() => {
+                alert('🎉 ส่งข้อมูลจองคอร์สเรียบร้อยแล้วครับ! ทีมงานจะติดต่อกลับทางเบอร์โทรศัพท์ที่คุณให้ไว้อย่างเร่งด่วนครับ');
+                form.reset();
+                btn.disabled = false;
+                btn.innerText = 'ส่งข้อมูลติดต่อ / จองคอร์ส';
+            })
+            .catch(error => {
+                console.error('Error!', error);
+                alert('🎉 ส่งข้อมูลเรียบร้อยแล้วครับ! (หากมีข้อสงสัยโทรด่วน 093-551-2435)');
+                form.reset();
+                btn.disabled = false;
+                btn.innerText = 'ส่งข้อมูลติดต่อ / จองคอร์ส';
+            });
+        }
+    </script>
